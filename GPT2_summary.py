@@ -1,13 +1,17 @@
-import torch
-from transformers import GPT2Tokenizer, GPT2LMHeadModel
+import gpt_2_simple as gpt2
+from tensorflow.python.compiler.tensorrt import trt_convert as trt
 
-tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
-model = GPT2LMHeadModel.from_pretrained('gpt2')
+model_name= "124M"
 
-summary = open("summary.txt", "rb").read()
-input()
-inputs = tokenizer.encode(summary, return_tensors='pt')#of tf for tensorflow
+if not os.path.isdir(os.path.join("models", model_name)):
+	gpt2.download_gpt2(model_name=model_name)
 
-outputs = model.generate(inputs, max_length=1000, do_sample=True, temperature=1, top_k=50) #alter temperature
-text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-print(text)
+
+file_name = "summary.txt"
+sess = gpt2.start_tf_sess()
+gpt2.finetune(sess,
+              file_name,
+              model_name=model_name,
+              steps=1000)   # steps is max number of training steps
+
+gpt2.generate(sess)
