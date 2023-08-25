@@ -1,7 +1,9 @@
 import numpy as np
 import sys
+import time
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
+import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, LSTM
 from keras.utils import np_utils
@@ -14,7 +16,7 @@ def tokenize_words(input):
     return " ".join(filtered)
 
 with open("summary.txt", "r") as file:
-    text = file.read().lower()
+    text = file.read().decode(encoding='utf-8')
 
 processed_inputs = tokenize_words(text)
 chars = sorted(list(set(processed_inputs)))
