@@ -56,19 +56,19 @@ def anime_scrape():
         time.sleep(2)
         driver.get(link)
 
-        title = driver.find_element("xpath", "/html/head/meta[8]").get_attribute("content")
+        title = driver.find_element("xpath", "/html/head/meta[9]").get_attribute("content")
         if title in anime_summary:
             continue
 
         print(f"[INFO] Scraping {title} for summary :: Got {anime_count}/{anime_num}")
-        body = driver.find_element("xpath", "/html/head/meta[13]").get_attribute("content")
+        body = driver.find_element("xpath", "/html/head/meta[14]").get_attribute("content")
         anime_summary[title] = body
         anime_count += 1
 
     return anime_summary
 
 # Extracts summary from raw text 
-def get_summary(anime_summary, model=0, lower=0):
+def get_summary(anime_summary, lower=0):
     summary_list = list(anime_summary.values())
 
     for i in range(len(summary_list)):
@@ -87,16 +87,13 @@ def get_summary(anime_summary, model=0, lower=0):
         summary_file.write(summary_text)
         summary_file.close()
 
-    if model:
-        for i in range(len(summary_list)):
-            if len(summary_list[i]) <= 30:
-                summary_list.pop(i)
-            if lower:
-                summary_list[i] = summary_list[i].lower()
-            # summary_list[i] = summary_list[i] + "<|endoftext|>" #lower caps all text + add endoftext
-        push_to_txt(summary_list)
-    else:
-        push_to_txt(summary_list)
+    for i in range(len(summary_list)):
+        if len(summary_list[i]) <= 30:
+            summary_list.pop(i)
+        if lower:
+            summary_list[i] = summary_list[i].lower()
+        # summary_list[i] = summary_list[i] + "<|endoftext|>" #lower caps all text + add endoftext
+    push_to_txt(summary_list)
     return
 
-get_summary(anime_scrape(), 1, 1)
+get_summary(anime_scrape(), 1)
