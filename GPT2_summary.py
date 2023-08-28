@@ -30,7 +30,7 @@ print(tokenizer.decode(train_dataset[5]))
 model = GPT2LMHeadModel.from_pretrained('gpt2')
 
 training_args = TrainingArguments(
-    output_dir = 'data/out', # the output directory for the model predictions and checkpoints
+    output_dir = 'data/out', # output directory for the model predictions and checkpoints
     overwrite_output_dir = True, # overwrite content of the output directory
     per_device_train_batch_size = 32, # batch size for training
     per_device_eval_batch_size = 32, # batch size for evaluation
