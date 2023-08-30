@@ -79,7 +79,7 @@ for i in range(1000):
     result = num_to_char[index]
     seq_in = [num_to_char[value] for value in pattern]
 
-    print(result) ## TAKES TOOO LONG NEXT
+    print(result)
 
     pattern.append(index)
     pattern = pattern[1:len(pattern)]
